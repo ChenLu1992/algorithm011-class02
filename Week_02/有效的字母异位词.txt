@@ -1,0 +1,22 @@
+bool isAnagram(char * s, char * t){
+    if(strlen(s) != strlen(t)){
+        return 0;
+    }
+
+    char buf[26] = {0};
+
+    int len = strlen(s);
+
+    for(int i=0; i<len; i++){
+        buf[(s[i]-'a')]++;
+        buf[(t[i]-'a')]--;
+    }
+
+    for(int i=0; i<26; i++){
+        if(buf[i]){
+            return 0;
+        }
+    }
+
+    return 1;
+}

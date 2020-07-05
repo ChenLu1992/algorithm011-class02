@@ -1,0 +1,64 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numChildren;
+ *     struct Node** children;
+ * };
+ */
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+void order(struct Node* root, int *nums, int *returnSize){
+    if(!root){
+        return;
+    }
+    nums[*returnSize] = root->val;
+    (*returnSize)++;
+    for(int i=0;i<root->numChildren;i++){
+        order(root->children[i], nums, returnSize);
+    }
+}
+
+
+int* preorder(struct Node* root, int* returnSize) {
+    *returnSize = 0;
+    if(!root){
+        return NULL;
+    }
+    
+    int *nums = malloc(sizeof(int) * 10000);
+    int i=0;
+    order(root, nums, &i);
+    *returnSize = i;
+    return nums;
+}
+
+
+
+//µü´ú
+
+int* preorder(struct Node* root, int* returnSize) {
+    *returnSize = 0;
+    if(!root){
+        return NULL;
+    }
+
+    int *res = malloc(sizeof(int) * 10000);
+    int top = -1;
+    struct Node *p;
+    struct Node **stack = (struct Node **)malloc(sizeof(struct Node*) * 10000);
+
+    stack[++top] = root;
+    while(top != -1){
+        p = stack[top--];
+        res[(*returnSize)++] = p->val;
+        for(int i=p->numChildren-1; i>=0; i--){
+            stack[++top] = p->children[i];
+        }
+    }
+    return res;
+
+}
