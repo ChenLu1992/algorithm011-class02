@@ -1,0 +1,50 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+
+void dfs(int *nums, int size, int index, int *tmpres, int *used, int **res, int *returnSize, int **returnColumnSizes){
+    //终止
+    if(index==size){
+        res[(*returnSize)] = (int *)malloc(sizeof(int) * size);
+        memcpy(res[(*returnSize)], tmpres, sizeof(int)*size);
+        (*returnColumnSizes)[*returnSize] = size;
+        (*returnSize)++;
+        return;
+    }
+
+    //遍历
+    for(int i=0; i<size; i++){
+        if(!used[i]){
+            used[i] = 1;
+            tmpres[index] = nums[i];
+            dfs(nums, size, index+1, tmpres, used, res, returnSize, returnColumnSizes);
+            used[i] = 0;
+        }
+    }
+
+    return;
+}
+
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+
+    //计算总数
+    *returnSize=1;
+    for(int i=2;i<=numsSize;i++){
+        *returnSize = *returnSize * i;
+    }
+
+    //分配空间
+    int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+    *returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+
+    int tmpres[numsSize];
+    int used[numsSize];
+
+    memset(used, 0, numsSize * sizeof(int));
+    *returnSize = 0;
+
+    dfs(nums, numsSize, 0, tmpres, used, res, returnSize, returnColumnSizes);
+    return res;
+}
