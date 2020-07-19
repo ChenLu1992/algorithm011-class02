@@ -1,0 +1,69 @@
+
+bool wordisnext(char *begin, char *word){
+    int count=0;
+    int len=strlen(begin);
+
+    for(int i=0;i<len;i++){
+        if(begin[i]!=word[i]){
+            count++;
+        }
+    }
+
+    if(1==count){
+        return 1;
+    }
+    return 0;
+}
+
+
+int ladderLength(char * beginWord, char * endWord, char ** wordList, int wordListSize){
+    
+    for(int i=0;i<wordListSize;i++){
+        if(0 == strcmp(endWord,wordList[i])){
+            break;
+        }
+        if(i==wordListSize-1){
+            return 0;
+        }
+    }
+
+    if(wordisnext(beginWord,endWord)){
+        return 2;
+    }
+
+
+    char *queue[10000];
+    int mark[wordListSize];
+    memset(mark,0,sizeof(int)*wordListSize);
+
+    int inpos=0;
+    int outpos=0;
+    int levelcount;
+    int res=0;
+    char *outs;
+
+    queue[inpos++]=beginWord;
+    res=1;
+
+
+    while(inpos!=outpos){
+        levelcount=inpos-outpos;
+        
+        for(int j=0;j<levelcount;j++){
+            outs = queue[outpos++];
+            if(0==strcmp(outs, endWord)){
+                return res;
+            }
+            
+            for(int k=0;k<wordListSize;k++){
+                if(mark[k]==0 && wordisnext(outs,wordList[k])){
+                    mark[k]=1;
+                    queue[inpos++]=wordList[k];
+                }
+            }
+        }
+        res++;
+    }
+    return 0;
+
+}

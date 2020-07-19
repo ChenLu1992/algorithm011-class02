@@ -1,0 +1,36 @@
+int cmp(void *a, void *b){
+    int i=*(int *)a;
+    int j=*(int *)b;
+    if(i>j){
+        return 1;
+    }
+    else if(i==j){
+        return 0; 
+    }
+    else{
+        return -1;
+    }
+}
+
+int findContentChildren(int* g, int gSize, int* s, int sSize){
+    if(!g || !s){
+        return 0;
+    }
+    qsort(g,gSize,sizeof(int),cmp);
+    qsort(s,sSize,sizeof(int),cmp);
+
+    int i=0;
+    int j=0;
+    int res=0;
+    while(i<gSize && j<sSize){
+        if(g[i]<=s[j]){
+            res++;
+            i++;
+            j++;
+        }
+        else{
+            j++;
+        }
+    }
+    return res;
+}

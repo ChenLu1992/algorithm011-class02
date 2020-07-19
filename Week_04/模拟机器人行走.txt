@@ -1,0 +1,75 @@
+typedef struct obNode{
+    int x;
+    int y;
+}stNode; 
+
+int cmpNode(void *a,void *b){
+    stNode *p1=(stNode *)a;
+    stNode *p2=(stNode *)b;
+
+    if(p1->x != p2->x){
+        return p1->x - p2->x;
+    } 
+
+    return p1->y - p2->y;
+}
+
+int getNextDir(int cur_dir, int cmd){
+    if(cmd==-1){
+        cur_dir++;
+    }
+
+    if(cmd == -2){
+        cur_dir--;
+    }
+
+    int tmp = cur_dir % 4;
+    return (tmp>=0)?tmp:(tmp+4);
+}
+
+int robotSim(int* commands, int commandsSize, int** obstacles, int obstaclesSize, int* obstaclesColSize){
+    int cur_dir=0;
+    int cur_x=0;
+    int cur_y=0;
+    int max_dir=0;
+    int tmpres=0;
+    stNode next;
+
+    int dir[4][2] = {{0,1},{1,0},{0,-1},{-1,0}}; //上右下左 按照向右转的顺序
+
+    stNode *obsArr= (stNode*)malloc(sizeof(stNode)*obstaclesSize);
+
+    for(int i=0;i<obstaclesSize;i++){
+        obsArr[i].x = obstacles[i][0];
+        obsArr[i].y = obstacles[i][1];
+    }
+
+    qsort(obsArr, obstaclesSize, sizeof(stNode),cmpNode);
+
+
+    int tmp;
+    stNode *Search=NULL;
+    for(int j=0;j<commandsSize;j++){
+        tmp=commands[j];
+        if(tmp==-1 || tmp==-2){
+            cur_dir=getNextDir(cur_dir,tmp);
+        }
+        else if(tmp>=1 && tmp<=9){
+            while(tmp--){
+                next.x = cur_x+dir[cur_dir][0];
+                next.y = cur_y+dir[cur_dir][1];
+                Search = bsearch(&next, obsArr, obstaclesSize, sizeof(stNode), cmpNode);
+                if(Search){
+                    break;
+                }
+                else{
+                    cur_x=next.x;
+                    cur_y=next.y;
+                }
+            }
+        }
+        tmpres = cur_x*cur_x + cur_y*cur_y;
+        max_dir = max_dir>tmpres?max_dir:tmpres;
+    }
+    return max_dir;
+}
