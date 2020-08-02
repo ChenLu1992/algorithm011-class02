@@ -1,0 +1,33 @@
+int numDecodings(char * s){
+    if('0'==s[0]){
+        return 0;
+    }
+    
+    int n=strlen(s);
+    //dp[i]表示第i个字符结尾的方法总数
+    int dp[n+1];
+
+    dp[0]=1;
+    dp[1]=1;
+
+    for(int i=1;i<n;i++){
+        if(s[i]=='0'){
+            if('1'==s[i-1] || '2'==s[i-1]){
+                dp[i+1]=dp[i-1];
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            if('1'==s[i-1] || ('2'==s[i-1] && s[i]>='1' && s[i]<= '6')){
+                dp[i+1] = dp[i] + dp[i-1];
+            }
+            else{
+                dp[i+1]=dp[i];
+            }
+        }
+    }
+
+    return dp[n];
+}

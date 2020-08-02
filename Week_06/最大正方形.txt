@@ -1,0 +1,35 @@
+int max(int a,int b){
+    return a>b?a:b;
+}
+int min(int a, int b, int c){
+    int res = a;
+    if(res>b){
+        res=b;
+    }
+    if(res>c){
+        res=c;
+    }
+
+    return res;
+}
+
+int maximalSquare(char** matrix, int matrixSize, int* matrixColSize){
+    int res=0;
+    if(0==matrixSize){
+        return 0;
+    }
+
+    for(int i=0;i<matrixSize;i++){
+        for(int j=0;j<matrixColSize[i];j++){
+                if(i==0 || j==0 || '0'==matrix[i][j]){
+                    res = max(res, matrix[i][j]-'0');
+                }
+                else{
+                    matrix[i][j] = 1+min(matrix[i-1][j],matrix[i][j-1],matrix[i-1][j-1]);
+                    res = max(res,matrix[i][j]-'0');
+                }
+        }
+    }
+
+    return res * res;
+}

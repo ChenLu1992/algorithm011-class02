@@ -1,0 +1,23 @@
+
+int min(int a, int b){
+    return a<b?a:b;
+}
+int minPathSum(int** grid, int gridSize, int* gridColSize){
+    int i;
+    int j;
+    for(i=1;i<gridSize;i++){
+        grid[i][0] += grid[i-1][0];
+    }
+    for(j=1;j<gridColSize[0];j++){
+        grid[0][j] += grid[0][j-1];
+    }
+
+    for(i=1;i<gridSize;i++){
+        for(j=1;j<gridColSize[i];j++){
+            grid[i][j] += min(grid[i-1][j],grid[i][j-1]);
+        }
+    }
+
+    return grid[gridSize-1][gridColSize[0]-1];
+}
+
