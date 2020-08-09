@@ -1,0 +1,103 @@
+int parent(int *p, int i){
+    int root=i;
+    while(root != p[root]){
+        root = p[root];
+    }
+
+    while(i != p[i]){
+        int x=i;
+        i=p[i];
+        p[x]=root;
+    }
+    return root;
+}
+
+void unionfind(int *p, int x, int y){
+    int rootx=parent(p,x);
+    int rooty=parent(p,y);
+
+    if(rootx==rooty){
+        return;
+    }
+
+    p[rootx]=rooty;
+    return;
+}
+
+bool isconnect(int *p, int x, int y){
+    int rootx=parent(p,x);
+    int rooty=parent(p,y);
+
+    return rootx==rooty;
+}
+
+void solve(char** board, int boardSize, int* boardColSize){
+    if(!board || boardSize==0 || !boardColSize){
+        return;
+    }
+
+    int m=boardSize;
+    int n=boardColSize[0];
+    int size=m*n + 1;
+    int p[size];
+    int count=0;
+
+    int i,j;
+
+    //init
+    for(i=0;i<size;i++){
+        p[i]=i;
+    }
+
+    int dummy=m*n;
+
+    //第一列和最后一列 
+    for(i=0;i<m;i++){
+        if(board[i][0]=='O'){
+            unionfind(p,i*n,dummy);
+        }
+
+        if(board[i][n-1]=='O'){
+            unionfind(p,i*n+n-1,dummy);
+        }
+    }
+
+    //第一行和最后一行
+    for(j=0;j<n;j++){
+        if(board[0][j]=='O'){
+            unionfind(p,j,dummy);
+        }
+
+        if(board[m-1][j]=='O'){
+            unionfind(p,(m-1)*n+j,dummy);
+        }
+    }
+
+
+    //中间区域
+    int dx[4]={0,1,0,-1};
+    int dy[4]={1,0,-1,0};
+    for(i=1;i<m-1;i++){
+        for(j=1;j<n-1;j++){
+            if('O'==board[i][j]){
+                for(int di=0;di<4;di++){
+                    int xx=dx[di]+i;
+                    int yy=dy[di]+j;
+                    if('O'==board[xx][yy]){
+                        unionfind(p,xx*n+yy,i*n+j);
+                    }
+                }
+            }
+        }
+    }
+
+    for(i=1;i<m-1;i++){
+        for(j=1;j<n-1;j++){
+            if('O'==board[i][j] && !isconnect(p,i*n+j,dummy)){
+                board[i][j]='X';
+            }
+        }
+    }
+
+    return;
+}

@@ -1,0 +1,36 @@
+void dfs(char** grid, int gridSize, int* gridColSize,int i, int j){
+    if(i<0 || i>=gridSize || j<0 || j>=gridColSize[0]){
+        return;
+    }
+
+    int dx[4]={0,1,0,-1};
+    int dy[4]={1,0,-1,0};
+
+    if(grid[i][j]=='1'){
+        grid[i][j]='0';
+        for(int m=0;m<4;m++){
+            int xx=i+dx[m];
+            int yy=j+dy[m];
+            dfs(grid,gridSize,gridColSize,xx,yy);
+        }        
+    }
+
+    return;
+}
+
+int numIslands(char** grid, int gridSize, int* gridColSize){
+    if(!grid || gridSize==0 || !gridColSize){
+        return 0;
+    }
+
+    int count=0;
+    for(int i=0;i<gridSize;i++){
+        for(int j=0;j<gridColSize[i];j++){
+            if('1'==grid[i][j]){
+                count++;
+                dfs(grid,gridSize,gridColSize,i,j);
+            }
+        }
+    }
+    return count;
+}

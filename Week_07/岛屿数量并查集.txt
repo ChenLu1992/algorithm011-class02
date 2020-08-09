@@ -1,0 +1,73 @@
+
+
+
+
+int parent(int *p, int i){
+    int root = i;
+    while(root != p[root]){
+        root = p[root];
+    }
+
+    while(i != p[i]){
+        int x=i;
+        i=p[i];
+        p[x]=root;
+    }
+    return root;
+}
+
+void unionfind(int *p, int i, int j,int *count){
+    int rooti = parent(p,i);
+    int rootj = parent(p,j);
+    if(rooti == rootj){
+        return;
+    }
+
+    p[rooti]=rootj;
+    (*count)--;
+    return;
+}
+
+int numIslands(char** grid, int gridSize, int* gridColSize){
+    if(!grid || gridSize==0 || !gridColSize){
+        return 0;
+    }
+
+    int count=0;
+
+    int m=gridSize;
+    int n=gridColSize[0];
+
+    int p[m*n];
+
+    //初始化并查集
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if('1'==grid[i][j]){
+                p[i*n+j]=i*n+j;
+                count++;
+            }
+            else{
+                p[i*n+j]=-1;
+            }
+        }
+    }
+
+    int dx[4]={0,1,0,-1};
+    int dy[4]={1,0,-1,0};
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if('1'==grid[i][j]){
+                for(int di=0;di<4;di++){
+                    int xx=dx[di]+i;
+                    int yy=dy[di]+j;
+                    if(xx>=0 && xx<m && yy>=0 && yy<n && '1'==grid[xx][yy]){
+                        unionfind(p,i*n+j,xx*n+yy,&count);
+                    }
+                }
+            }
+        }
+    }
+    return count;
+}

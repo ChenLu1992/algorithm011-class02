@@ -1,0 +1,31 @@
+
+void dfs(int** M, int MSize, int i, int *visit){
+
+    for(int j=0;j<MSize;j++){
+        if(1==M[i][j] && visit[j]==0){
+            visit[j]=1;
+            dfs(M,MSize,j,visit);
+        }
+    }
+    return;
+}
+
+int findCircleNum(int** M, int MSize, int* MColSize){
+    if(!M || MSize==0 || !MColSize){
+        return 0;
+    }
+
+    int count=0;
+    int visit[MSize];
+    memset(visit,0,sizeof(visit));
+
+    for(int i=0;i<MSize;i++){
+        if(visit[i]==0){
+            count++;
+        }
+        visit[i]=1;
+        dfs(M,MSize,i,visit);
+    }
+    return count;
+}
+

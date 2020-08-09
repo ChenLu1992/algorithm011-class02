@@ -1,0 +1,49 @@
+
+
+int count;
+
+int parent(int *p, int i){
+    int root=i;
+    while(root != p[root]){
+        root = p[root];
+    }
+    while(i != p[i]){
+        int x=i;
+        i=p[i];
+        p[x] = root;
+    }
+    return root;
+}
+
+void unionfind(int *p, int i, int j){
+    int rooti =parent(p,i);
+    int rootj = parent(p,j);
+    if(rooti ==rootj){
+        return;
+    }
+
+    p[rooti] = rootj;
+    count--;
+    return;
+}
+
+int findCircleNum(int** M, int MSize, int* MColSize){
+    if(!M || MSize==0 || !MColSize){
+        return 0;
+    }
+    count = MSize;
+    int p[MSize];
+    for(int i=0;i<MSize;i++){
+        p[i]=i;
+    }
+
+    for(int j=0;j<MSize;j++){
+        for(int m=0;m<MSize;m++){
+            if(1==M[j][m]){
+                unionfind(p,j,m);
+            }
+        }
+    }
+    return count;
+}
+

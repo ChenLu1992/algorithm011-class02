@@ -1,0 +1,17 @@
+
+
+int climbStairs(int n){
+    if(n<=2){
+        return n;
+    }
+
+    int i=1;
+    int j=2;
+    int res;
+    for(int c=3;c<=n;c++){
+        res = i+j;
+        i=j;
+        j=res;
+    }
+    return res;
+}
