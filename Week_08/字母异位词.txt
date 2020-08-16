@@ -1,0 +1,21 @@
+bool isAnagram(char * s, char * t){
+    char cnt[26];
+    memset(cnt,0,sizeof(cnt));
+
+    while(*s){
+        cnt[*s- 'a']++;
+        s++;
+    }
+
+    while(*t){
+        cnt[*t - 'a']--;
+        t++;
+    }
+
+    for(int i=0;i<26;i++){
+        if(0 != cnt[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
