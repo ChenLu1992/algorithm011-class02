@@ -1,0 +1,41 @@
+void reverse(char *s, int start, int end){
+    char tmp;
+    
+    while(start<end){
+        tmp = s[start];
+        s[start]=s[end];
+        s[end]=tmp;
+        start++;
+        end--;
+    }
+
+    return;
+}
+
+
+char * reverseStr(char * s, int k){
+    int len = strlen(s);
+    int nextlen=len;
+    int start=0;
+    int end = 0;
+
+    while(nextlen){
+        if(nextlen >= 2*k){
+            end = start + k-1;
+            reverse(s, start, end);
+            start += 2*k;
+            nextlen -= 2*k;       
+        }
+        else if(k< nextlen && 2*k>nextlen){
+            end = start + k-1;
+            reverse(s, start, end);
+            nextlen=0;
+        }
+        else{
+            end = start + nextlen - 1;
+            reverse(s, start, end);
+            nextlen=0;
+        }
+    }
+    return s;
+}

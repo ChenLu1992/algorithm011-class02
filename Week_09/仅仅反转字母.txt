@@ -1,0 +1,39 @@
+bool IsNot(char a){
+    
+    if('a'<= a && a<= 'z'){
+        return 0;
+    }
+
+    if('A'<= a && a<= 'Z'){
+        return 0;
+    }
+
+    return 1;
+}
+
+char * reverseOnlyLetters(char * S){
+    int len = strlen(S);
+    int start=0;
+    int end=len-1;
+
+    while(start<end){
+        while(start<len && IsNot(S[start])){
+            start++;
+        }
+        if(start==len){
+            break;
+        }
+        while(end>0 && IsNot(S[end])){
+            end--;
+        }
+        
+        if(start<end){
+            char tmp=S[start];
+            S[start]=S[end];
+            S[end]=tmp;
+            start++;
+            end--;
+        }
+    }
+    return S;
+}
